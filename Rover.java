@@ -57,9 +57,36 @@ public class Rover {
                     }
                 }
             }
-
             //говорим что рассматриваемая ячейка проверена и больше её трогать не нужно
             visited.replace(specificСell, true);
+        }
+
+        int endValueDistance = distance.get(CELLFINISH); //последнее значение distance c которым работаю
+        String endCell = CELLFINISH; // последняя клетка с которой работаю
+
+        //инициализируем список для хранения пути движения ровера
+        path = new LinkedList<>();
+        addPath(endCell); // добавляем конечную точку и с неё начинаем обратный путь
+
+        //двигаемся от конечной точки к начальной (по алг.Дейкстры) и проверяем откуда был совершён переход
+        while(endValueDistance != distance.get(CELLSTART)){
+            LinkedList<String> allNeighborsCell = neigbors.get(endCell);
+
+            for(String neighbor : allNeighborsCell){
+                int valueFromMap = getValueFromMap(endCell);
+                int prevValueDistance = endValueDistance - valueFromMap;
+
+                //if true => шли через этого соседа
+                if(prevValueDistance == distance.get(neighbor)){
+                    steps++;
+                    fuel += Math.abs(getValueFromMap(endCell) - getValueFromMap(neighbor));
+                    addPath(neighbor);
+                    endValueDistance -= valueFromMap;
+                    endCell = neighbor;
+                    break; //если хоть 1 сосед подошёл выходим из цикла (если есть 2 пути до этой клетки)
+                }
+            }
+
         }
     }
 
@@ -119,5 +146,11 @@ public class Rover {
         }
 
         return neigbors;
+    }
+
+    private static void addPath(String cell){
+        int charOne = Character.digit(cell.charAt(0), 10);
+        int charTwo = Character.digit(cell.charAt(1), 10);
+        path.add("["+charOne+"]["+charTwo+"]");
     }
 }
