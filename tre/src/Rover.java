@@ -1,5 +1,5 @@
-package com;
-
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.*;
@@ -12,6 +12,7 @@ public class Rover {
     static final int INFINITY = 10000; //мнимая бесконечность в программе
     static int steps = 0;
     static int fuel = 0;
+    static int [][] map;
 
     static Map<String,Integer> distance = null; //значение растояния при переходе из точки А в точку B
     static Map<String,Boolean> visited = null; //память о том рассматривалась ли данная точка
@@ -19,7 +20,7 @@ public class Rover {
     static List<String> path = null; //путь по которому можно добраться из начальной клетки в конечную
 
     public static void main(String[] args) {
-        int [][] map = new int[][]{ {1,3,1,2},
+        map = new int[][]{ {1,3,1,2},
                 {1,5,2,1},
                 {2,2,1,3} };
         calculateRoverPath(map); //TODO: доделать
@@ -28,7 +29,7 @@ public class Rover {
     //основной метод по заданию
     public static void calculateRoverPath(int[][] map) {
         //инициализирую основные hashMap с которыми буду работать
-        distance.createDistance(map);
+        distance = createDistance(map);
         distance.replace("00", map[0][0]); //заполняем начальную точку default значением
         visited = createVisited(map);
         neigbors = scanNeighbors(map);
@@ -176,14 +177,10 @@ public class Rover {
     //метод для записи данных в файл
     private static void writeData(String data){
         File planFile = new File("path-plan.txt");
-        Writer out  = new OutputStreamWriter(planFile);
         try {
-            file.createNewFile();
-            out.write(data);
+            planFile.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            out.close();
         }
     }
 }
