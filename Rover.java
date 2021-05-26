@@ -1,9 +1,6 @@
 package com;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -99,9 +96,21 @@ public class Rover {
 
         }
 
-        System.out.println("Хей");
-        //TODO: дописать метод для записи в файл
-        writeData("[1][1]->[2][2]->[2][3]");
+        //переворачиваем коллекцию
+        Collections.reverse(path);
+        String resultPath = "";
+
+        for (int i = 0; i < path.size(); i++){
+            if(i == path.size() - 1) {
+                resultPath += path.get(i);
+            }else{
+                resultPath += path.get(i) + "->";
+            }
+        }
+
+        writeData(resultPath + System.lineSeparator());
+        writeData("steps: " + steps + System.lineSeparator());
+        writeData("fuel: " + (fuel + steps));
     }
 
     //создаёт изначально заполненную бесконечным мнимыми значением hashMap
@@ -179,10 +188,20 @@ public class Rover {
     //метод для записи данных в файл
     private static void writeData(String data){
         File planFile = new File("path-plan.txt");
+        Writer writer = null;
         try {
-            planFile.createNewFile();
+            writer = new FileWriter(planFile, true);
+            writer.write(data);
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            if(writer != null){
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
