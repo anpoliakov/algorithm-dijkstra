@@ -19,10 +19,9 @@ public class Rover {
     static List<String> path = null; //путь по которому можно добраться из начальной клетки в конечную
 
     public static void main(String[] args) {
-        map = new int[][]{ {1,3,1,2},
-                {1,5,2,1},
-                {2,2,1,3} };
-        calculateRoverPath(map); //TODO: доделать
+        map = args[0];
+        Arrays.binarySearch(args[0]);
+        calculateRoverPath(map);
     }
 
     //основной метод по заданию
@@ -205,3 +204,8 @@ public class Rover {
         }
     }
 }
+
+
+//TODO: исправить максимально допустимый получаемый размер двухмерного массива (сейчас он от 1 до 10)
+//TODO: дописать исключения и проверки
+//Задание: https://gitlab.com/SyberryAcademy/syberry-academy-e07-test-task
