@@ -19,8 +19,8 @@ public class Rover {
     static List<String> path = null; //путь по которому можно добраться из начальной клетки в конечную
 
     public static void main(String[] args) {
-        map = args[0];
-        Arrays.binarySearch(args[0]);
+        //TODO: дописать метод парсинга введённого массива
+        map = new int[][]{{2,1,1}, {4,1,8}, {3,6,2}};
         calculateRoverPath(map);
     }
 
