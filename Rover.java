@@ -2,6 +2,8 @@ package com;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Решение задачи алгоритмом Дейкстры
@@ -19,8 +21,7 @@ public class Rover {
     static List<String> path = null; //путь по которому можно добраться из начальной клетки в конечную
 
     public static void main(String[] args) {
-        //TODO: дописать метод парсинга введённого массива
-        map = new int[][]{{2,1,1}, {4,1,8}, {3,6,2}};
+        initMasFromConsole(args[0]);
         calculateRoverPath(map);
     }
 
@@ -200,6 +201,32 @@ public class Rover {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    private static void initMasFromConsole(String consolString){
+        final String REGX = "\\{(\\d+,*)+\\}";
+        List <String[]> allRows = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile(REGX);
+        Matcher matcher = pattern.matcher(consolString);
+
+        while (matcher.find()){
+            String row = matcher.group();
+            row = row.substring(1,row.length() - 1);
+            String[] columns = row.split(",");
+            allRows.add(columns);
+        }
+
+        map = new int[allRows.size()][allRows.get(0).length];
+
+        //заполняем двухмерный массив
+        for (int n = 0; n < allRows.size(); n++){
+            String[] columns = allRows.get(n);
+
+            for (int m = 0; m < allRows.get(0).length; m++){
+                map[n][m] = Integer.parseInt(columns[m]);
             }
         }
     }
